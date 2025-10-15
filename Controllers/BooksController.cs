@@ -74,6 +74,28 @@ namespace BookLibraryApi.Controllers
         }
 
         /// <summary>
+        /// Search books by multiple search terms (title, author, genre, or description)
+        /// </summary>
+        [HttpPost("search")]
+        public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooksWithTerms([FromBody] string[] searchTerms)
+        {
+            if (searchTerms == null || searchTerms.Length == 0)
+            {
+                return BadRequest("Search terms array cannot be null or empty.");
+            }
+
+            var validTerms = searchTerms.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+            if (validTerms.Length == 0)
+            {
+                return BadRequest("At least one valid search term is required.");
+            }
+
+            var books = await _bookRepository.SearchBooksAsync(searchTerms);
+            var bookDtos = books.Select(MapToDto);
+            return Ok(bookDtos);
+        }
+
+        /// <summary>
         /// Get books by genre
         /// </summary>
         [HttpGet("genre/{genre}")]

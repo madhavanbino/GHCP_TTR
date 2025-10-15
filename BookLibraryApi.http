@@ -1,6 +1,65 @@
-@BookLibraryApi_HostAddress = http://localhost:5265
+@BookLibraryApi_HostAddress = http://localhost:5000
 
-GET {{BookLibraryApi_HostAddress}}/weatherforecast/
+# Get all books
+GET {{BookLibraryApi_HostAddress}}/api/books
+Accept: application/json
+
+###
+
+# Get book by ID
+GET {{BookLibraryApi_HostAddress}}/api/books/1
+Accept: application/json
+
+###
+
+# Search books with single term (existing endpoint)
+GET {{BookLibraryApi_HostAddress}}/api/books/search?searchTerm=gatsby
+Accept: application/json
+
+###
+
+# Search books with multiple terms (new endpoint)
+POST {{BookLibraryApi_HostAddress}}/api/books/search
+Content-Type: application/json
+
+[
+  "gatsby",
+  "orwell",
+  "fantasy"
+]
+
+###
+
+# Search books with multiple terms - author and genre
+POST {{BookLibraryApi_HostAddress}}/api/books/search
+Content-Type: application/json
+
+[
+  "Harper Lee",
+  "Classic Literature",
+  "science fiction"
+]
+
+###
+
+# Search books with single term in array
+POST {{BookLibraryApi_HostAddress}}/api/books/search
+Content-Type: application/json
+
+[
+  "programming"
+]
+
+###
+
+# Get books by genre
+GET {{BookLibraryApi_HostAddress}}/api/books/genre/Fiction
+Accept: application/json
+
+###
+
+# Get available books
+GET {{BookLibraryApi_HostAddress}}/api/books/available
 Accept: application/json
 
 ###

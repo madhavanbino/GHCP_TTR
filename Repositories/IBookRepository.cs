@@ -11,6 +11,7 @@ namespace BookLibraryApi.Repositories
         Task<Book?> UpdateBookAsync(int id, Book book);
         Task<bool> DeleteBookAsync(int id);
         Task<IEnumerable<Book>> SearchBooksAsync(string searchTerm);
+        Task<IEnumerable<Book>> SearchBooksAsync(string[] searchTerms);
         Task<IEnumerable<Book>> GetBooksByGenreAsync(string genre);
         Task<IEnumerable<Book>> GetAvailableBooksAsync();
     }

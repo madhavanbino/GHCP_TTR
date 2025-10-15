@@ -273,7 +273,95 @@ searchBooks('Classic Literature');
 
 ---
 
-### 5. Get Books by Genre
+### 5. Search Books with Multiple Terms
+
+Search for books using multiple search terms. Returns books that match ANY of the provided search terms in title, author, genre, or description.
+
+**Endpoint**: `POST /api/books/search`
+
+**Request Body**: Array of strings (search terms)
+
+```json
+[
+  "string1",
+  "string2",
+  "string3"
+]
+```
+
+**Response**: 
+- **200 OK**: Array of BookDto objects
+- **400 Bad Request**: Empty or invalid search terms array
+
+#### cURL Example
+```bash
+curl -X POST "http://localhost:5000/api/books/search" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '["gatsby", "1984", "fantasy"]'
+```
+
+#### JavaScript (Axios) Example
+```javascript
+const searchBooksWithTerms = async (searchTerms) => {
+  try {
+    const response = await axios.post('http://localhost:5000/api/books/search', searchTerms);
+    console.log('Search results:', response.data);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 400) {
+      console.error('Search terms array cannot be empty or invalid');
+    } else {
+      console.error('Error searching books:', error.response?.data || error.message);
+    }
+    throw error;
+  }
+};
+
+// Usage
+searchBooksWithTerms(['gatsby', 'orwell', 'fiction']);
+searchBooksWithTerms(['Harper Lee', 'Classic Literature']);
+searchBooksWithTerms(['science', 'technology', 'programming']);
+```
+
+#### Sample Request
+```json
+["gatsby", "orwell", "fantasy"]
+```
+
+#### Sample Response
+```json
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "isbn": "978-0-7432-7356-5",
+    "publishedDate": "1925-04-10T00:00:00Z",
+    "genre": "Classic Literature",
+    "isAvailable": true,
+    "description": "A story of decadence and excess in 1920s America",
+    "totalCopies": 5,
+    "availableCopies": 3
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": "George Orwell",
+    "isbn": "978-0-452-28423-4",
+    "publishedDate": "1949-06-08T00:00:00Z",
+    "genre": "Dystopian Fiction",
+    "isAvailable": true,
+    "description": "A dystopian social science fiction novel",
+    "totalCopies": 3,
+    "availableCopies": 2
+  }
+]
+```
+
+---
+
+### 6. Get Books by Genre
 
 Retrieves all books of a specific genre.
 
@@ -311,7 +399,7 @@ getBooksByGenre('Science Fiction');
 
 ---
 
-### 6. Get Available Books
+### 7. Get Available Books
 
 Retrieves all books that are currently available for borrowing.
 
@@ -345,7 +433,7 @@ getAvailableBooks();
 
 ---
 
-### 7. Create New Book
+### 8. Create New Book
 
 Creates a new book in the library.
 
@@ -442,7 +530,7 @@ createBook(newBook);
 
 ---
 
-### 8. Update Book
+### 9. Update Book
 
 Updates an existing book (partial update supported).
 
@@ -517,7 +605,7 @@ updateBook(1, updateData);
 
 ---
 
-### 9. Delete Book
+### 10. Delete Book
 
 Deletes a book from the library.
 

@@ -79,6 +79,34 @@ namespace BookLibraryApi.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Book>> SearchBooksAsync(string[] searchTerms)
+        {
+            if (searchTerms == null || searchTerms.Length == 0)
+            {
+                return new List<Book>();
+            }
+
+            // Filter out null, empty, or whitespace-only terms
+            var validTerms = searchTerms.Where(t => !string.IsNullOrWhiteSpace(t))
+                                      .Select(t => t.Trim())
+                                      .ToArray();
+
+            if (validTerms.Length == 0)
+            {
+                return new List<Book>();
+            }
+
+            // Search for books that contain ANY of the search terms
+            return await _context.Books
+                .Where(b => validTerms.Any(term => 
+                    b.Title.Contains(term) ||
+                    b.Author.Contains(term) ||
+                    b.Genre.Contains(term) ||
+                    b.Description.Contains(term)))
+                .Distinct()
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Book>> GetBooksByGenreAsync(string genre)
         {
             return await _context.Books
