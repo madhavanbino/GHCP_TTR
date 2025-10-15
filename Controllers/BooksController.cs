@@ -19,7 +19,7 @@ namespace BookLibraryApi.Controllers
         /// <summary>
         /// Get all books
         /// </summary>
-        /// Added the comment.
+        /// Returns a list of all books in the library and helps the suer to get the all books.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks()
         {
