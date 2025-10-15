@@ -19,6 +19,7 @@ namespace BookLibraryApi.Controllers
         /// <summary>
         /// Get all books
         /// </summary>
+        /// Added the comment.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks()
         {
